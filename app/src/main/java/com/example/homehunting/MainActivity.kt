@@ -2,6 +2,7 @@ package com.example.homehunting
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,15 +31,15 @@ class MainActivity : AppCompatActivity() {
                                 "Right on the river, walking distance to the park, no noisy neighbours.")
 
         val list = mutableListOf<Housing>(forestCottage, hauntedPenthouse, vampireRoom, cityFlat, cardboardBox)
+
+        showFragment(HouseListFragment(list))
     }
 
-    fun main (){
-
-        for () {
-
-            
-
-        }
+    private fun showFragment (fragmentToShow: Fragment){
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragmentToShow)
+            .commitNow()
 
     }
+
 }

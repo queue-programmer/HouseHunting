@@ -16,7 +16,5 @@ enum class Type() {
 
 enum class OwnerForm (){
         RENT,
-        SELFOWN,
-
-
+        SELFOWN
 }
