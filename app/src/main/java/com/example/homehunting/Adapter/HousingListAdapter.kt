@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.layout_custom.view.*
 
 class HousingListAdapter(
     var dataset: MutableList<Housing>
-) : RecyclerView.Adapter<HousingListAdapter.ViewHolder>() {
+        ) : RecyclerView.Adapter<HousingListAdapter.ViewHolder>() {
 
     lateinit var context: Context
 
@@ -24,8 +24,6 @@ class HousingListAdapter(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-
-
         return ViewHolder(listItem)
 
     }
@@ -37,7 +35,6 @@ class HousingListAdapter(
         holder.listItem.delete_button.setOnClickListener {
             Toast.makeText(context,"I pressed the delete button on ${dataset[position].address}", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     override fun getItemCount(): Int {

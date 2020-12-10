@@ -18,6 +18,7 @@ class CustomHousingLayout(context: Context, attributeSet: AttributeSet? = null) 
     val typeTitle: TextView
     val typeText: TextView
 
+
     val deleteButton: Button
 
 
