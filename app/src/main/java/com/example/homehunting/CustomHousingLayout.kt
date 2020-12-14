@@ -17,7 +17,10 @@ class CustomHousingLayout(context: Context, attributeSet: AttributeSet? = null) 
     val priceText: TextView
     val typeTitle: TextView
     val typeText: TextView
-
+    val amenitiesTitle: TextView
+    val amenitiesText: TextView
+    val ownerFormTitle: TextView
+    val ownerFormText: TextView
 
     val deleteButton: Button
 
@@ -31,6 +34,10 @@ class CustomHousingLayout(context: Context, attributeSet: AttributeSet? = null) 
         priceText = view.price_text
         typeTitle = view.typeTitle_text
         typeText = view.type_text
+        amenitiesTitle = view.amenitiesTitle_text
+        amenitiesText = view.amenities_text
+        ownerFormTitle = view.ownerFormTitle_text
+        ownerFormText = view.ownerForm_text
 
         deleteButton = view.delete_button
 
@@ -49,5 +56,13 @@ class CustomHousingLayout(context: Context, attributeSet: AttributeSet? = null) 
 
     fun setType(newText: String){
         typeText.text = newText
+    }
+
+    fun setAmenities(newText: String){
+        amenitiesText.text = newText
+    }
+
+    fun setOwnerForm(newText: String){
+        ownerFormText.text = newText
     }
 }

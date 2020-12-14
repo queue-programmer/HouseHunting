@@ -3,4 +3,6 @@
     <string name="price">price:</string>
     <string name="address">address:</string>
     <string name="type">type:</string>
+    <string name="amentities">amenities:</string>
+    <string name="ownerForm">Owner Form:</string>
 </resources>

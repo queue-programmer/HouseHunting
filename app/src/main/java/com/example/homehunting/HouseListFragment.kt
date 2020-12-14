@@ -10,25 +10,24 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.homehunting.Adapter.HousingListAdapter
+import com.example.homehunting.Interfaces.AddHouseListener
+import com.example.homehunting.Interfaces.RecyclerEventListener
+import kotlinx.android.synthetic.main.fragment_housing_list.*
 import kotlinx.android.synthetic.main.fragment_housing_list.view.*
 import kotlinx.android.synthetic.main.layout_custom.*
 
-class HouseListFragment(var houseList: MutableList<Housing>): Fragment() {
+class HouseListFragment(var houseList: MutableList<Housing>): Fragment(), RecyclerEventListener, AddHouseListener{
 
     lateinit var recyclerView: RecyclerView
     lateinit var houseSearchBar: SearchView
 
     private lateinit var recyclerAdapter: HousingListAdapter
     private lateinit var recyclerLayoutManager: RecyclerView.LayoutManager
-    private lateinit var housingAdapter: HousingListAdapter
 
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
         val view = inflater.inflate(R.layout.fragment_housing_list, container, false)
 
         houseSearchBar = view.housing_search_view
@@ -40,11 +39,7 @@ class HouseListFragment(var houseList: MutableList<Housing>): Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        housingAdapter = HousingListAdapter(
-            houseList
-        )
-
-        recyclerAdapter = HousingListAdapter(houseList)
+        recyclerAdapter = HousingListAdapter(houseList,this)
         recyclerView.adapter = recyclerAdapter
 
         recyclerLayoutManager = LinearLayoutManager(activity)
@@ -64,19 +59,9 @@ class HouseListFragment(var houseList: MutableList<Housing>): Fragment() {
             }
         })
 
-//        houseSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(text: String): Boolean {
-//                filterList(text)
-//
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(text: String): Boolean {
-//                filterList(text)
-//
-//                return false
-//            }
-//        })
+        add_button.setOnClickListener {
+            (activity as MainActivity).goToAddFragment(AddHouseFragment(this))
+        }
     }
 
     fun searchInList(queryText: String){
@@ -91,15 +76,18 @@ class HouseListFragment(var houseList: MutableList<Housing>): Fragment() {
         recyclerAdapter.notifyDataSetChanged()
     }
 
-//    fun filterList(queryText: String) {
-//        val filteredList = mutableListOf<String>()
-//
-//        for (Housing in fullHousingList) {
-//            if (Housing.contains(queryText, true)) {
-//                filteredList.add(Housing)
-//            }
-//        }
-//        recyclerAdapter. = filteredList
-//        recyclerAdapter.notifyDataSetChanged()
-//    }
+    override fun deleteListener(housingBeGone: Housing) {
+        houseList.remove(housingBeGone)
+
+        searchInList(houseSearchBar.query.toString())
+    }
+
+    override fun addListener(addThatHouse: Housing) {
+        houseList.add(addThatHouse)
+
+        searchInList(houseSearchBar.query.toString())
+
+        (activity as MainActivity).onBackPressed()
+    }
+
 }
