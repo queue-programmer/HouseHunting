@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,11 +20,19 @@ import kotlinx.android.synthetic.main.layout_custom.*
 
 class HouseListFragment(var houseList: MutableList<Housing>): Fragment(), RecyclerEventListener, AddHouseListener{
 
+    lateinit var inputPriceFrom: EditText
+    lateinit var inputPriceTo: EditText
+    lateinit var filterButton: Button
+    lateinit var addButton: Button
+
     lateinit var recyclerView: RecyclerView
     lateinit var houseSearchBar: SearchView
 
+
     private lateinit var recyclerAdapter: HousingListAdapter
     private lateinit var recyclerLayoutManager: RecyclerView.LayoutManager
+
+    var listOfHouseObjects = mutableListOf<Housing>( )
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +42,11 @@ class HouseListFragment(var houseList: MutableList<Housing>): Fragment(), Recycl
 
         houseSearchBar = view.housing_search_view
         recyclerView = view.houseList_RecyclerView
+        inputPriceFrom = view.filterPriceFrom_inputView
+        inputPriceTo = view.filterPriceTo_inputView
+
+        filterButton = view.filter_button
+        addButton = view.add_button
 
         return view
     }
@@ -39,7 +54,9 @@ class HouseListFragment(var houseList: MutableList<Housing>): Fragment(), Recycl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerAdapter = HousingListAdapter(houseList,this)
+        updateHousingList(houseList)
+
+        recyclerAdapter = HousingListAdapter(listOfHouseObjects,this)
         recyclerView.adapter = recyclerAdapter
 
         recyclerLayoutManager = LinearLayoutManager(activity)
@@ -58,15 +75,31 @@ class HouseListFragment(var houseList: MutableList<Housing>): Fragment(), Recycl
                 return false
             }
         })
+        setOnClickListeners()
+    }
 
-        add_button.setOnClickListener {
+    fun setOnClickListeners(){
+
+        addButton.setOnClickListener {
             (activity as MainActivity).goToAddFragment(AddHouseFragment(this))
+        }
+        filterButton.setOnClickListener {
+            updateHousingList(getFilteredPriceList(inputPriceFrom.text.toString().toIntOrNull(),
+                inputPriceTo.text.toString().toIntOrNull()))
+            searchInList(houseSearchBar.query.toString())
+        }
+    }
+
+    fun updateHousingList(updatedList: MutableList<Housing>){
+        listOfHouseObjects.clear()
+        updatedList.forEach{
+            listOfHouseObjects.add(it)
         }
     }
 
     fun searchInList(queryText: String){
         val filteredList = mutableListOf<Housing>()
-        for (housing in houseList){
+        for (housing in listOfHouseObjects){
             if (housing.address.contains(queryText, true)){
                 filteredList.add(housing)
             }
@@ -76,10 +109,36 @@ class HouseListFragment(var houseList: MutableList<Housing>): Fragment(), Recycl
         recyclerAdapter.notifyDataSetChanged()
     }
 
+    fun getFilteredPriceList(fromPrice: Int?, toPrice: Int?): MutableList<Housing>{
+        val filteredPriceList = mutableListOf<Housing>()
+        for (housing in houseList){
+
+            if (fromPrice != null && toPrice != null){
+                if (fromPrice <= housing.price && toPrice >= housing.price){
+                    filteredPriceList.add(housing)
+                }
+            }else if (fromPrice == null && toPrice != null){
+                if (toPrice >= housing.price){
+                    filteredPriceList.add(housing)
+                }
+            }else if (fromPrice != null && toPrice == null){
+                if (fromPrice <= housing.price){
+                    filteredPriceList.add(housing)
+                }
+            }else{
+                filteredPriceList.add(housing)
+            }
+        }
+        return filteredPriceList
+    }
+
     override fun deleteListener(housingBeGone: Housing) {
         houseList.remove(housingBeGone)
+        listOfHouseObjects.remove(housingBeGone)
 
         searchInList(houseSearchBar.query.toString())
+
+
     }
 
     override fun addListener(addThatHouse: Housing) {

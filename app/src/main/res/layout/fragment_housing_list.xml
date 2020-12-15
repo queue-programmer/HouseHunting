@@ -40,7 +40,7 @@
         android:id="@+id/filterPriceFrom_inputView"
         android:hint="From"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -56,7 +56,7 @@
         android:id="@+id/filterPriceTo_inputView"
         android:hint="To"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
         android:layout_marginStart="16dp"
@@ -67,6 +67,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/filterPriceFrom_inputView"
         app:layout_constraintTop_toBottomOf="@+id/filterTitle" />
+
+    <Button
+        android:id="@+id/filter_button"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="FILTER"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/houseList_RecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterPriceFrom_inputView"
+        android:backgroundTint="#B1FFD3"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/houseList_RecyclerView"
@@ -81,7 +98,7 @@
         app:layout_constraintBottom_toTopOf="@id/add_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterPriceFrom_inputView" />
+        app:layout_constraintTop_toBottomOf="@id/filter_button" />
 
     <Button
         android:id="@+id/add_button"
@@ -92,7 +109,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="#B1C7FF"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

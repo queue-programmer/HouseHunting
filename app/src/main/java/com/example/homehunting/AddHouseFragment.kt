@@ -66,7 +66,6 @@ class AddHouseFragment(private val addHouse: AddHouseListener) : Fragment() {
             val newHousing = Housing(address, type, price, ownerForm, amenities)
 
             addHouse.addListener(newHousing)
-
         }
         else{
             Toast.makeText(context,"Please fill out all spaces.", Toast.LENGTH_LONG).show()
